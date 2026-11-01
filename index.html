@@ -68,6 +68,9 @@ body::before{
 .stage{position:relative;z-index:1;display:flex;justify-content:center;
   padding:clamp(10px,3vw,30px) clamp(8px,2.6vw,22px)
           calc(max(26px,6vh) + env(safe-area-inset-bottom,0px))}
+/* 启封前：信封在首屏居中，不要浮在顶上留一大片黑。 */
+body[data-preopen] .stage{min-height:100vh;min-height:100svh;align-items:center;
+  padding-bottom:clamp(10px,3vw,30px)}
 
 /* ---------- 宣纸 ---------- */
 .paper{
@@ -86,7 +89,8 @@ body::before{
   border-radius:2px;overflow:hidden;
   box-shadow:0 32px 74px -30px rgba(0,0,0,.88),0 0 0 1px rgba(230,210,154,.14);
   transition:transform .7s cubic-bezier(.2,.8,.2,1),opacity .5s ease}
-.envelope .env-face{position:relative;padding:clamp(28px,7.8vw,46px) clamp(22px,6vw,38px) clamp(22px,6vw,34px);
+.envelope .env-face{position:relative;
+  padding:clamp(34px,9.4vw,56px) clamp(24px,6.4vw,40px) clamp(26px,7vw,38px);
   background:linear-gradient(163deg,#28503f 0%,#1c3730 44%,#14261f 100%);color:#eee4cb}
 .envelope .env-face::after{content:"";position:absolute;inset:0;pointer-events:none;opacity:.55;
   background-image:repeating-linear-gradient(128deg,rgba(255,255,255,.03) 0 1px,transparent 1px 6px)}
@@ -800,6 +804,7 @@ $("copyBtn").onclick=function(){copyText($("replyText").textContent,this,"复　
 
 /* ===================== 启封 ==================== */
 function openPost(removeEnv){
+  delete document.body.dataset.preopen;      /* 展开后不再居中，让长帖正常流 */
   $("post").hidden=false;
   requestAnimationFrame(function(){$("post").classList.add("show");$("card").classList.add("opened")});
   var env=$("envelope");
@@ -963,6 +968,8 @@ $("envelope")&&$("envelope").addEventListener("keydown",function(e){if(e.key==="
     document.querySelector(".stage").style.cssText+="width:"+w+"px;margin:0 auto"; }
 
   var m=Q.get("mode")||"";
+  /* 成图与预览路径下关掉首屏居中，不然信封被垂直居中后按顶部坐标裁切会偏 */
+  if(m) delete document.body.dataset.preopen;
   if(m==="share"){ applyMode("share"); $("post").hidden=true; return; }
   if(m==="envelope") return;                       /* 只留信封，作封面成图 */
 
