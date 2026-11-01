@@ -775,12 +775,14 @@ function settle(asFinal, silent){
   $("timeValue").innerHTML=pickedText()+"<span class='shichen'>"+shiChen(+sel.time.split(":")[0])+"</span>"
     +(sel.memo?"<span class='sub'>附言　"+esc(sel.memo)+"</span>":"");
   $("replyText").textContent=replyBody();
-  /* file:// 下 origin 为 "null"，链接不可用，只留回执 */
+  /* file:// 下 origin 为 "null"，链接不可用，只留回执。
+     注意：这里只能「加」 hide，不能「减」——否则会把 applyMode 在 final 态
+     已隐掉的分享块重新翻出来（小任自己的定帖上不该看到「发与小任」）。 */
   var shareBox=document.querySelector(".share");
   if(shareBox){
     var usable = location.protocol!=="file:" && location.origin && location.origin!=="null";
-    shareBox.classList.toggle("hide", !usable);
-    if(usable) $("shareUrl").value=shareUrl();
+    if(usable){ $("shareUrl").value=shareUrl(); }
+    else{ shareBox.classList.add("hide"); }
   }
   if(!asFinal){
     $("doneHint").innerHTML = CONFIG.notifyWebhook
@@ -967,6 +969,22 @@ $("envelope")&&$("envelope").addEventListener("keydown",function(e){if(e.key==="
     out.push("INFO vw="+vw+" scrollW="+de.scrollWidth+" fam="+fam.slice(0,28));
     document.title="ATM "+out.join(" | ");
   },380);
+
+  /* 定帖态（?mode=final，也就是小任自己打开的那一屏）：
+     分享块与回执块必须隐藏，否则会出现「小任把链接发与小任」这种话。 */
+  if(AT==="final") setTimeout(function(){
+    var out=[], chk=function(n,c,x){ out.push((c?"PASS ":"FAIL ")+n+(c?"":" ["+x+"]")) };
+    var vis=function(el){ return el && !el.classList.contains("hide") && el.getBoundingClientRect().height>1 };
+    chk("处于 final 态", document.body.getAttribute("data-mode")==="final", document.body.getAttribute("data-mode"));
+    chk("分享块已隐", !vis(document.querySelector(".share")), "visible");
+    chk("回执块已隐", !vis(document.querySelector(".reply")), "visible");
+    chk("印章为已蒙玉允", /\u5df2\u3000\u8499\u3000\u7389\u3000\u5141|已蒙玉允/.test($("stampText").textContent), $("stampText").textContent);
+    chk("择时区已隐", !vis($("picker")), "visible");
+    var tv=$("timeValue").textContent;
+    chk("时间已上帖", /\u65e5/.test(tv) && /时/.test(tv) && !/敬候/.test(tv), tv);
+    chk("帖身可见且够高", $("post").getBoundingClientRect().height>200, Math.round($("post").getBoundingClientRect().height));
+    document.title="ATF "+out.join(" | ");
+  },420);
 
   /* 成图参数：?vw=390 模拟窄屏宽度 */
   if(Q.get("vw")){ var w=parseInt(Q.get("vw"),10)||390;
