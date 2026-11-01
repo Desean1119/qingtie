@@ -838,6 +838,9 @@ $("envelope")&&$("envelope").addEventListener("keydown",function(e){if(e.key==="
 
   /* 自检：?autotest=flow|settle|restore 走真实 DOM 事件，结果写进 title */
   var AT = Q.get("autotest");
+  /* 自检要隔离：同浏览器里上一轮（尤其 mode=final）的存档会让裸访问直接进已定态。
+     restore 除外——它就是验上一轮写的存档能不能恢复。 */
+  if(AT && AT!=="restore" && AT!=="settle") save(null);
   if(AT==="settle") setTimeout(function(){
     var days=[].slice.call(document.querySelectorAll(".day:not(.blank)")).filter(function(d){return !d.disabled});
     days[Math.min(6,days.length-1)].click();
