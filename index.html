@@ -789,7 +789,9 @@ function settle(asFinal, silent){
       ? "已递与小任，他随后再送一纸<b>定帖</b>给您。"
       : "复制回执发与小任即算落定；他随后再送一纸<b>定帖</b>给您。";
   }
-  save({date:sel.date.getTime(),time:sel.time,memo:sel.memo,at:Date.now()});
+  /* final 是只读看别人的选择，不写存档；否则会污染同一浏览器上裸访问时的恢复 */
+  if(asFinal) save(null);
+  else save({date:sel.date.getTime(),time:sel.time,memo:sel.memo,at:Date.now()});
   if(!asFinal && !silent) notify();      /* 重载恢复时不再重复通知主人 */
 }
 function unseal(){
