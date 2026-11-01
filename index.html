@@ -1,0 +1,776 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="format-detection" content="telephone=no">
+<meta name="theme-color" content="#1e3a32">
+<title>请帖 · 小任敬邀</title>
+<style>
+/* ==========================================================================
+   请帖 · 中式雅致　米白宣纸 / 墨绿 / 烫金 / 朱砂
+   单文件 · 零外链 · 微信内置浏览器直开
+   模式：默认（可择时）  ?mode=final（已定，成图用）  ?open=1 跳信封
+   ========================================================================== */
+
+:root{
+  --paper:     #f4eee2;
+  --paper-2:   #ece3d2;
+  --paper-3:   #e3d8c2;
+  --ink:       #29261f;
+  --ink-soft:  #56514a;
+  --ink-mute:  #8e887b;
+  --jade:      #1e3a32;
+  --jade-2:    #2d5648;
+  --jade-soft: #6d8a80;
+  --gold:      #a8873c;
+  --gold-hi:   #e6d29a;
+  --gold-deep: #7c6027;
+  --cinnabar:  #a8322a;
+  --cinnabar-2:#8b271f;
+
+  --f-kai:"KaiTi","楷体","STKaiti","Kaiti SC","Kaiti TC",serif;
+  --f-song:"SimSun","宋体","Songti SC","STSong",serif;
+  --f-fang:"FangSong","仿宋","STFangsong",serif;
+
+  --card-w:452px;
+  --pad-x:clamp(20px,5.6vw,34px);
+  --pad-y:clamp(28px,7.2vw,42px);
+}
+
+*{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+html,body{margin:0;padding:0}
+body{
+  min-height:100svh;background:#13110e;color:var(--ink);
+  font-family:var(--f-song);-webkit-font-smoothing:antialiased;overflow-x:hidden;
+}
+body::before{
+  content:"";position:fixed;inset:0;z-index:0;pointer-events:none;
+  background:
+    radial-gradient(120% 70% at 50% -8%,rgba(168,135,60,.20),transparent 62%),
+    radial-gradient(100% 60% at 50% 108%,rgba(45,86,72,.30),transparent 64%);
+}
+.stage{position:relative;z-index:1;display:flex;justify-content:center;
+  padding:clamp(10px,3vw,30px) clamp(8px,2.6vw,22px) max(26px,6vh)}
+
+/* ---------- 宣纸 ---------- */
+.paper{
+  background-color:var(--paper);
+  background-image:
+    url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='220' height='220'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='.86' numOctaves='3' stitchTiles='stitch'/><feColorMatrix type='saturate' values='0'/></filter><rect width='220' height='220' filter='url(%23n)' opacity='.2'/></svg>"),
+    radial-gradient(58% 38% at 16% 10%,rgba(255,255,255,.72),transparent 70%),
+    radial-gradient(52% 40% at 84% 80%,rgba(201,183,150,.34),transparent 72%),
+    linear-gradient(178deg,var(--paper) 0%,var(--paper-2) 60%,var(--paper-3) 100%);
+  background-size:220px 220px,auto,auto,auto;
+  background-blend-mode:multiply,normal,normal,normal;
+}
+
+/* ==================== 信封 ==================== */
+.envelope{width:min(var(--card-w),100%);position:relative;cursor:pointer;user-select:none;
+  border-radius:2px;overflow:hidden;
+  box-shadow:0 32px 74px -30px rgba(0,0,0,.88),0 0 0 1px rgba(230,210,154,.14);
+  transition:transform .7s cubic-bezier(.2,.8,.2,1),opacity .5s ease}
+.envelope .env-face{position:relative;padding:clamp(28px,7.8vw,46px) clamp(22px,6vw,38px) clamp(22px,6vw,34px);
+  background:linear-gradient(163deg,#28503f 0%,#1c3730 44%,#14261f 100%);color:#eee4cb}
+.envelope .env-face::after{content:"";position:absolute;inset:0;pointer-events:none;opacity:.55;
+  background-image:repeating-linear-gradient(128deg,rgba(255,255,255,.03) 0 1px,transparent 1px 6px)}
+.env-frame{position:absolute;inset:clamp(9px,2.4vw,15px);border:1px solid rgba(230,210,154,.4);pointer-events:none}
+.env-frame::before{content:"";position:absolute;inset:5px;border:1px solid rgba(230,210,154,.16)}
+/* 竖排三列：右题 · 中称 · 左款 */
+.env-cols{position:relative;display:flex;flex-direction:row-reverse;justify-content:center;
+  gap:clamp(16px,4.6vw,30px);align-items:flex-start}
+.vert{writing-mode:vertical-rl;text-orientation:upright;font-family:var(--f-kai);line-height:1}
+.env-title{font-size:clamp(30px,8.4vw,40px);letter-spacing:.4em;color:#f4ead0;
+  text-shadow:0 1px 0 rgba(0,0,0,.4)}
+.env-to{font-size:clamp(15px,4.1vw,18px);letter-spacing:.26em;color:rgba(244,234,208,.92);margin-top:4px}
+.env-from{font-size:clamp(11.5px,3.1vw,13px);letter-spacing:.24em;color:rgba(230,210,154,.66);margin-top:10px}
+.env-seal{position:absolute;left:clamp(22px,6vw,38px);bottom:clamp(20px,5.6vw,32px);
+  width:clamp(56px,15vw,68px);height:clamp(56px,15vw,68px);display:grid;place-items:center;border-radius:4px;
+  transform:rotate(-6deg);
+  background:radial-gradient(120% 120% at 32% 26%,#c4453a,var(--cinnabar) 54%,var(--cinnabar-2));
+  box-shadow:0 8px 22px -8px rgba(168,50,42,.95),0 0 0 1px rgba(255,255,255,.14) inset;
+  transition:transform .5s cubic-bezier(.2,.9,.2,1),box-shadow .5s ease}
+.env-seal span{font-family:var(--f-kai);color:#fdf4e4;font-size:clamp(13px,3.5vw,15px);line-height:1.3;text-align:center;letter-spacing:.04em}
+.env-hint{margin-top:clamp(18px,5vw,26px);display:flex;align-items:center;justify-content:center;gap:10px;
+  font-family:var(--f-fang);font-size:11.5px;letter-spacing:.4em;text-indent:.4em;color:rgba(230,210,154,.62)}
+.env-hint .hd{flex:0 0 clamp(18px,5vw,30px);height:1px}
+.env-hint .hd.l{background:linear-gradient(90deg,transparent,rgba(230,210,154,.5))}
+.env-hint .hd.r{background:linear-gradient(90deg,rgba(230,210,154,.5),transparent)}
+.env-hint i{display:inline-block;font-style:normal;animation:bob 2.3s ease-in-out infinite}
+@keyframes bob{0%,100%{transform:translateY(0);opacity:.65}50%{transform:translateY(4px);opacity:1}}
+.envelope.tapped .env-seal{transform:rotate(-6deg) scale(1.07);box-shadow:0 12px 30px -8px rgba(196,69,58,1)}
+.envelope.gone{opacity:0;transform:translateY(-14px) scale(.985);pointer-events:none}
+
+/* ==================== 帖身 ==================== */
+.post{width:min(var(--card-w),100%);opacity:0;transform:translateY(18px);
+  transition:opacity .8s ease .08s,transform .8s cubic-bezier(.2,.8,.2,1) .08s}
+.post.show{opacity:1;transform:none}
+.post[hidden]{display:none}
+.card{position:relative;border-radius:2px;overflow:hidden;
+  box-shadow:0 36px 84px -32px rgba(0,0,0,.88),0 0 0 1px rgba(168,135,60,.24)}
+.mframe{position:absolute;inset:clamp(8px,2.2vw,13px);border:1px solid rgba(168,135,60,.48);pointer-events:none;z-index:3}
+.mframe::before{content:"";position:absolute;inset:4px;border:1px solid rgba(168,135,60,.2)}
+.corner{position:absolute;width:clamp(24px,6.4vw,32px);height:clamp(24px,6.4vw,32px);z-index:4;pointer-events:none;color:var(--gold)}
+.corner.tl{top:clamp(5px,1.7vw,10px);left:clamp(5px,1.7vw,10px)}
+.corner.tr{top:clamp(5px,1.7vw,10px);right:clamp(5px,1.7vw,10px);transform:scaleX(-1)}
+.corner.bl{bottom:clamp(5px,1.7vw,10px);left:clamp(5px,1.7vw,10px);transform:scaleY(-1)}
+.corner.br{bottom:clamp(5px,1.7vw,10px);right:clamp(5px,1.7vw,10px);transform:scale(-1)}
+.wmark{position:absolute;left:50%;top:42%;translate:-50% -50%;width:clamp(280px,80vw,360px);
+  opacity:.032;color:var(--jade);z-index:0;pointer-events:none}
+.content{position:relative;z-index:2;padding:var(--pad-y) var(--pad-x) clamp(20px,5.4vw,30px)}
+
+/* 首行 */
+.kicker{display:flex;align-items:center;justify-content:center;gap:11px;
+  font-family:var(--f-fang);font-size:11px;letter-spacing:.44em;color:var(--jade-soft)}
+.kicker .d{flex:0 0 22px;height:1px;background:linear-gradient(90deg,transparent,var(--gold))}
+.kicker .d.r{background:linear-gradient(90deg,var(--gold),transparent)}
+
+h1.title{margin:clamp(11px,3vw,16px) 0 0;text-align:center;font-family:var(--f-kai);font-weight:400;
+  font-size:clamp(36px,10.4vw,50px);line-height:1;letter-spacing:.4em;text-indent:.4em;
+  background:linear-gradient(96deg,#8b6d2b 0%,#c8aa5d 22%,#f4e4b6 44%,#c8aa5d 62%,#8b6d2b 100%);
+  -webkit-background-clip:text;background-clip:text;color:transparent;
+  filter:drop-shadow(0 1px 0 rgba(255,255,255,.55))}
+.sheen{position:relative;overflow:hidden}
+.sheen::after{content:"";position:absolute;inset:0;pointer-events:none;
+  background:linear-gradient(105deg,transparent 42%,rgba(255,255,255,.8) 50%,transparent 58%);
+  mix-blend-mode:overlay;transform:translateX(-120%)}
+.card.opened .sheen::after{animation:sweep 1.6s cubic-bezier(.4,0,.2,1) .3s 1 forwards}
+@keyframes sweep{to{transform:translateX(120%)}}
+.subtitle{margin-top:9px;text-align:center;font-family:var(--f-fang);
+  font-size:11.5px;letter-spacing:.3em;text-indent:.3em;color:var(--ink-soft)}
+
+/* 抬头的称呼 */
+.salutation{margin:clamp(20px,5.4vw,28px) 0 0;font-family:var(--f-kai);
+  font-size:clamp(15.5px,4.3vw,18px);letter-spacing:.1em;color:var(--jade)}
+.salutation b{font-weight:400;color:var(--ink);border-bottom:1px solid rgba(168,135,60,.6);padding:0 .1em .18em}
+
+/* 正文 */
+.prose{margin:clamp(11px,3vw,15px) 0 0;font-size:clamp(14.4px,3.9vw,15.4px);line-height:2.2;
+  color:var(--ink-soft);letter-spacing:.03em}
+.prose p{margin:0;text-indent:2em}
+.prose em{font-style:normal;color:var(--jade)}
+
+/* 条目 */
+.fields{margin:clamp(18px,5vw,24px) 0 0}
+.field{display:grid;grid-template-columns:5.2em 1fr;gap:9px;align-items:baseline;
+  padding:clamp(10px,2.9vw,13px) 1px;border-top:1px solid rgba(168,135,60,.26)}
+.field:last-child{border-bottom:1px solid rgba(168,135,60,.26)}
+.field dt{font-family:var(--f-kai);font-size:14px;letter-spacing:.26em;color:var(--jade);white-space:nowrap}
+.field dd{margin:0;font-size:clamp(14.4px,3.9vw,15.6px);line-height:1.78;color:var(--ink)}
+.field dd .ph{font-family:var(--f-fang);color:var(--cinnabar);letter-spacing:.1em}
+.field dd .sub{display:block;font-family:var(--f-fang);font-size:12px;color:var(--ink-mute);letter-spacing:.08em;margin-top:3px}
+.field dd strong{font-weight:400;color:var(--jade)}
+.shichen{display:inline-block;margin-left:7px;padding:1px 6px 0;border:1px solid rgba(168,135,60,.6);
+  border-radius:2px;font-family:var(--f-kai);font-size:11.5px;color:var(--gold-deep);letter-spacing:.14em;vertical-align:1px}
+
+/* ---------- 择时 ---------- */
+.picker{margin-top:clamp(16px,4.6vw,22px)}
+.ph-head{display:flex;align-items:flex-start;justify-content:space-between;gap:8px;flex-wrap:wrap}
+.ph-lbl{font-family:var(--f-kai);font-size:14.5px;letter-spacing:.24em;color:var(--jade)}
+.ph-lbl small{display:block;font-family:var(--f-fang);font-size:11px;letter-spacing:.1em;color:var(--ink-mute);margin-top:4px}
+.mnav{display:flex;align-items:center;gap:2px;margin-left:auto}
+.mnav button{appearance:none;border:1px solid rgba(168,135,60,.42);background:rgba(255,255,255,.44);
+  color:var(--gold-deep);font-family:var(--f-kai);font-size:14px;line-height:1;padding:5px 9px;border-radius:2px;cursor:pointer;transition:.22s}
+.mnav button:hover:not(:disabled){background:var(--jade);color:#f2e8d0;border-color:var(--jade)}
+.mnav button:disabled{opacity:.28;cursor:default}
+.mnav .ml{min-width:6em;text-align:center;font-family:var(--f-kai);font-size:13.5px;letter-spacing:.1em;color:var(--ink)}
+
+.cal{margin-top:11px;display:grid;grid-template-columns:repeat(7,1fr);gap:3px}
+.cal .wd{text-align:center;font-family:var(--f-fang);font-size:11px;color:var(--jade-soft);padding:3px 0 6px}
+.day{appearance:none;border:1px solid transparent;background:transparent;cursor:pointer;padding:0;
+  aspect-ratio:1/1;border-radius:2px;display:grid;place-items:center;position:relative;
+  font-family:var(--f-song);font-size:14.5px;color:var(--ink);
+  transition:background .2s,color .2s,border-color .2s,transform .2s}
+.day.blank{visibility:hidden}
+.day:disabled{color:#c3bbab;cursor:default}
+.day:not(:disabled):hover{border-color:rgba(168,135,60,.6);background:rgba(255,255,255,.6)}
+.day.today::after{content:"";position:absolute;bottom:5px;width:11px;height:1px;background:rgba(168,135,60,.8)}
+.day.on{background:linear-gradient(158deg,#2c5347,#1a332c);border-color:var(--jade);color:#f2e8d2;
+  transform:translateY(-1px);box-shadow:0 7px 15px -9px rgba(30,58,50,1)}
+.day.on::after{background:var(--gold-hi)}
+
+.slots{margin-top:12px;display:grid;grid-template-columns:repeat(2,1fr);gap:7px}
+.slot{appearance:none;cursor:pointer;padding:9px 6px 8px;border-radius:2px;text-align:center;
+  border:1px solid rgba(168,135,60,.4);background:rgba(255,255,255,.44);
+  font-family:var(--f-kai);color:var(--ink);transition:.22s}
+.slot .k{display:block;font-size:14.5px;letter-spacing:.2em;text-indent:.2em}
+.slot .v{display:block;font-family:var(--f-song);font-size:11.5px;color:var(--ink-mute);letter-spacing:.06em;margin-top:3px}
+.slot:hover{border-color:var(--gold);background:rgba(255,255,255,.74)}
+.slot.on{background:linear-gradient(158deg,#2c5347,#1a332c);border-color:var(--jade);color:#f2e8d2;
+  box-shadow:0 7px 15px -9px rgba(30,58,50,1)}
+.slot.on .v{color:rgba(230,210,154,.86)}
+
+.custom{margin-top:10px;display:flex;align-items:center;gap:8px;flex-wrap:wrap;
+  font-family:var(--f-fang);font-size:11.5px;color:var(--ink-mute);letter-spacing:.1em}
+.custom input[type=time]{appearance:none;border:1px solid rgba(168,135,60,.42);background:rgba(255,255,255,.55);
+  border-radius:2px;padding:6px 8px;font-family:var(--f-song);font-size:16px;color:var(--ink)}
+.note{margin-top:10px}
+.note textarea{width:100%;appearance:none;border:1px solid rgba(168,135,60,.38);border-radius:2px;
+  background:rgba(255,255,255,.5);padding:9px 10px;min-height:52px;resize:vertical;
+  font-family:var(--f-song);font-size:16px;line-height:1.7;color:var(--ink)}
+.note textarea::placeholder{color:#aca596;font-family:var(--f-fang);font-size:13.5px}
+.note textarea:focus,.custom input:focus{outline:none;border-color:var(--jade);background:rgba(255,255,255,.82)}
+
+.actions{margin-top:clamp(14px,4vw,18px);display:grid;gap:8px}
+.btn{appearance:none;cursor:pointer;border-radius:2px;width:100%;text-align:center;display:block;
+  padding:13px 14px 12px;font-family:var(--f-kai);font-size:15.5px;letter-spacing:.32em;text-indent:.32em;
+  text-decoration:none;transition:.24s}
+.btn.primary{border:1px solid var(--jade);background:linear-gradient(163deg,#2d5648,#1a332c);
+  color:#f2e8d2;box-shadow:0 13px 28px -15px rgba(27,53,45,1)}
+.btn.primary:hover{filter:brightness(1.09)}
+.btn.primary:active{transform:translateY(1px)}
+.btn.primary:disabled{background:rgba(255,255,255,.44);border:1px dashed rgba(168,135,60,.5);
+  color:var(--ink-mute);box-shadow:none}
+.btn.ghost{border:1px solid rgba(168,135,60,.5);background:rgba(255,255,255,.4);
+  color:var(--gold-deep);font-size:13.5px;letter-spacing:.24em;text-indent:.24em;padding:11px 13px}
+.btn.ghost:hover{background:rgba(255,255,255,.74);border-color:var(--gold)}
+.hint{margin:1px 0 0;text-align:center;font-family:var(--f-fang);font-size:11.5px;line-height:1.8;
+  letter-spacing:.08em;color:var(--ink-mute);word-break:break-word}
+.hint b{font-weight:400;color:var(--jade);font-family:var(--f-kai);letter-spacing:.14em}
+
+/* ---------- 帖后小注（邀请版成图） ---------- */
+.note-line{margin-top:clamp(14px,4vw,18px);padding-top:12px;border-top:1px solid rgba(168,135,60,.26);
+  display:flex;gap:11px;align-items:baseline}
+.note-line .ln{flex:0 0 auto;font-family:var(--f-kai);font-size:13.5px;letter-spacing:.22em;color:var(--cinnabar)}
+.note-line .lv{font-family:var(--f-fang);font-size:12.6px;line-height:2;letter-spacing:.05em;color:var(--ink-soft)}
+.note-line .lv b{font-weight:400;color:var(--jade)}
+
+/* ---------- 分享链接块 ---------- */
+.share{margin-top:11px;padding:11px 12px 10px;border-radius:2px;background:rgba(255,255,255,.4);
+  border:1px solid rgba(168,135,60,.3)}
+.share .st{font-family:var(--f-kai);font-size:12px;letter-spacing:.2em;color:var(--jade)}
+.share .srow{display:flex;gap:7px;margin-top:7px;align-items:stretch}
+.share input{flex:1 1 auto;min-width:0;appearance:none;border:1px solid rgba(168,135,60,.34);
+  background:rgba(255,255,255,.6);border-radius:2px;padding:7px 8px;
+  font-family:var(--f-song);font-size:11.5px;color:var(--ink-soft);text-overflow:ellipsis}
+.share .sbtn{flex:0 0 auto;appearance:none;cursor:pointer;border:1px solid var(--jade);border-radius:2px;
+  background:linear-gradient(163deg,#2d5648,#1a332c);color:#f2e8d2;
+  font-family:var(--f-kai);font-size:12.5px;letter-spacing:.1em;padding:0 12px}
+.share .sn{margin-top:6px;font-family:var(--f-fang);font-size:11px;letter-spacing:.06em;color:var(--ink-mute)}
+
+/* ---------- 落定 ---------- */
+.stamp{margin:clamp(14px,4vw,18px) auto 0;width:max-content;padding:9px 16px 8px;border-radius:3px;
+  border:1.6px solid rgba(168,50,42,.72);font-family:var(--f-kai);font-size:16px;
+  letter-spacing:.4em;text-indent:.4em;color:var(--cinnabar);transform:rotate(-2.2deg);
+  background:url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='110' height='110'><filter id='r'><feTurbulence type='fractalNoise' baseFrequency='1.05' numOctaves='2'/><feColorMatrix type='saturate' values='0'/></filter><rect width='110' height='110' filter='url(%23r)' opacity='.5'/></svg>") ,rgba(255,250,240,.4);
+  background-blend-mode:multiply,normal;box-shadow:0 5px 16px -9px rgba(168,50,42,.8)}
+.reply{margin-top:clamp(13px,3.8vw,17px);padding:13px 14px 12px;border-radius:2px;
+  border:1px dashed rgba(168,135,60,.5);background:rgba(255,255,255,.42)}
+.reply .t{font-family:var(--f-fang);font-size:11px;letter-spacing:.24em;color:var(--jade-soft);margin-bottom:6px}
+.reply pre{margin:0;white-space:pre-wrap;word-break:break-word;
+  font-family:var(--f-song);font-size:14px;line-height:1.92;color:var(--ink);letter-spacing:.02em}
+
+/* ---------- 落款 ---------- */
+.almanac{margin-top:clamp(18px,5vw,22px);padding-top:11px;border-top:1px solid rgba(168,135,60,.24);
+  display:flex;justify-content:center;gap:clamp(10px,3.4vw,20px);flex-wrap:wrap;
+  font-family:var(--f-fang);font-size:11.5px;letter-spacing:.1em;color:var(--ink-mute)}
+.almanac i{font-style:normal}
+.almanac .yi{color:var(--jade)}
+.almanac .ji{color:var(--cinnabar)}
+.signoff{margin-top:clamp(12px,3.4vw,16px);display:flex;align-items:flex-end;justify-content:flex-end;gap:clamp(10px,3vw,14px)}
+.signoff .who{text-align:right;padding-bottom:3px}
+.signoff .who .a{display:block;font-family:var(--f-fang);font-size:11px;letter-spacing:.28em;color:var(--ink-mute)}
+.signoff .who .b{display:block;margin-top:5px;font-family:var(--f-kai);white-space:nowrap;
+  font-size:clamp(16px,4.4vw,19px);letter-spacing:.14em;color:var(--jade)}
+.sealbox{flex:0 0 auto;width:clamp(54px,14.6vw,64px);height:clamp(54px,14.6vw,64px);display:grid;place-items:center;
+  border-radius:4px;transform:rotate(-6deg);
+  background:url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='90' height='90'><filter id='q'><feTurbulence type='fractalNoise' baseFrequency='.82' numOctaves='3'/><feColorMatrix type='saturate' values='0'/></filter><rect width='90' height='90' filter='url(%23q)' opacity='.4'/></svg>"),
+    radial-gradient(120% 120% at 32% 26%,#c4453a,var(--cinnabar) 52%,var(--cinnabar-2));
+  background-blend-mode:multiply,normal;
+  box-shadow:0 9px 22px -11px rgba(168,50,42,.95),0 0 0 1px rgba(255,255,255,.14) inset}
+.sealbox span{font-family:var(--f-kai);color:#fdf4e4;font-size:clamp(12.5px,3.4vw,14.5px);line-height:1.28;text-align:center;letter-spacing:.03em}
+.colophon{margin-top:clamp(12px,3.4vw,16px);text-align:center;font-family:var(--f-fang);
+  font-size:10.5px;letter-spacing:.28em;text-indent:.28em;color:rgba(41,38,31,.4)}
+
+/* ---------- 模式：可见性由 JS 依 data-show 控制 ---------- */
+.hide{display:none !important}
+
+@media (max-width:340px){
+  .field{grid-template-columns:4.4em 1fr}
+  h1.title{letter-spacing:.28em;text-indent:.28em}
+}
+@media (prefers-reduced-motion:reduce){*{animation-duration:.001s !important;transition-duration:.001s !important}}
+</style>
+</head>
+<body data-mode="picking">
+
+<svg width="0" height="0" style="position:absolute" aria-hidden="true"><defs>
+  <g id="orn-corner">
+    <path d="M1 46 V13 A12 12 0 0 1 13 1 H46" fill="none" stroke="currentColor" stroke-width="1.1"/>
+    <path d="M8 46 V20 A12 12 0 0 1 20 8 H46" fill="none" stroke="currentColor" stroke-width=".7" opacity=".6"/>
+    <path d="M15.5 46 V27 A5.5 5.5 0 0 1 21 21.5 H46" fill="none" stroke="currentColor" stroke-width=".7" opacity=".38"/>
+    <circle cx="24.5" cy="24.5" r="1.5" fill="currentColor" opacity=".78"/>
+  </g>
+  <g id="orn-petal"><path d="M60 8 C70 30 70 44 60 60 C50 44 50 30 60 8 Z" fill="none" stroke="currentColor" stroke-width="1.2"/>
+    <path d="M60 22 C65 36 65 46 60 56 C55 46 55 36 60 22 Z" fill="none" stroke="currentColor" stroke-width=".9"/></g>
+  <g id="orn-flower">
+    <use href="#orn-petal"/><use href="#orn-petal" transform="rotate(45 60 60)"/>
+    <use href="#orn-petal" transform="rotate(90 60 60)"/><use href="#orn-petal" transform="rotate(135 60 60)"/>
+    <use href="#orn-petal" transform="rotate(180 60 60)"/><use href="#orn-petal" transform="rotate(225 60 60)"/>
+    <use href="#orn-petal" transform="rotate(270 60 60)"/><use href="#orn-petal" transform="rotate(315 60 60)"/>
+    <circle cx="60" cy="60" r="9" fill="none" stroke="currentColor" stroke-width="1.1"/>
+    <circle cx="60" cy="60" r="3.2" fill="currentColor" opacity=".5"/>
+  </g>
+</defs></svg>
+
+<div class="stage">
+
+  <!-- ================= 信封 ================= -->
+  <div class="envelope" id="envelope" role="button" tabindex="0" aria-label="启封">
+    <div class="env-face paper">
+      <div class="env-frame"></div>
+      <div class="env-cols">
+        <div class="vert env-title">请　帖</div>
+        <div style="display:flex;flex-direction:row-reverse;gap:clamp(12px,3.4vw,20px)">
+          <div class="vert env-to" id="envTo">范老师　亲启</div>
+          <div class="vert env-from" id="envFrom">小任　敬封</div>
+        </div>
+      </div>
+      <div class="env-seal" id="envSeal"><span>小任<br>之印</span></div>
+      <div class="env-hint"><span class="hd l"></span><span>轻 触 启 封 <i>↓</i></span><span class="hd r"></span></div>
+    </div>
+  </div>
+  <!-- ================= 帖身 ================= -->
+  <main class="post" id="post" hidden>
+    <article class="card paper" id="card">
+      <div class="mframe"></div>
+      <svg class="corner tl"><use href="#orn-corner"/></svg><svg class="corner tr"><use href="#orn-corner"/></svg>
+      <svg class="corner bl"><use href="#orn-corner"/></svg><svg class="corner br"><use href="#orn-corner"/></svg>
+      <svg class="wmark" viewBox="0 0 120 120"><use href="#orn-flower"/></svg>
+
+      <div class="content">
+        <div class="kicker"><span class="d"></span><span>谨　订</span><span class="d r"></span></div>
+        <div class="sheen"><h1 class="title">请　帖</h1></div>
+        <div class="subtitle" id="colophonTop">薄　酌　一　叙</div>
+
+        <p class="salutation">尊敬的 <b id="guestName">范老师</b>　台鉴</p>
+
+        <div class="prose">
+          <p>屡思请益，未获良辰；案牍之余，常念旧话。</p>
+          <p>今谨备<em>薄酌</em>，敬设清谈，恭请　<em>拨冗一叙</em>。</p>
+          <p data-show="picking invite">时辰一节，恭候　<em>玉音自择</em>；帖上落定，小任扫榻以候。</p>
+          <p data-show="settled final">吉日已承　<em id="proseDate">—</em>　之命，扫榻以待，敬候　<em>玉趾</em>。</p>
+        </div>
+
+        <dl class="fields">
+          <div class="field"><dt>时　间</dt><dd id="timeValue"><span class="ph">敬候　您亲择</span></dd></div>
+          <div class="field"><dt>席　设</dt><dd id="venueValue"><span class="ph">容小任稍后奉上</span></dd></div>
+          <div class="field"><dt>敬　备</dt><dd id="offerValue">薄酌 · 清谈 · 旧话<span class="sub">专席候驾，别无他客</span></dd></div>
+        </dl>
+
+        <div class="note-line" data-show="invite">
+          <span class="ln">择时</span>
+          <span class="lv">帖后另附<b>择时一帖</b>，恭请点开亲择吉日时辰。一落定，小任即时得知，另奉<b>定帖</b>为凭。</span>
+        </div>
+
+        <!-- ---------- 择时 ---------- -->
+        <section class="picker" id="picker" data-show="picking" aria-label="择定时间">
+          <div class="ph-head">
+            <div class="ph-lbl">择　时<small>吉日与时辰，恭请自择</small></div>
+            <div class="mnav">
+              <button id="prevM" aria-label="上一月">‹</button>
+              <span class="ml" id="mLabel">—</span>
+              <button id="nextM" aria-label="下一月">›</button>
+            </div>
+          </div>
+          <div class="cal" id="cal"></div>
+          <div class="slots" id="slots"></div>
+          <div class="custom">
+            <span>其他时刻</span>
+            <input type="time" id="ctime" value="18:30" step="900" aria-label="自定义时刻">
+            <span id="cTimeHint"></span>
+          </div>
+          <div class="note"><textarea id="memo" maxlength="80" placeholder="附言（可空）：忌口、想吃什么、想聊什么……"></textarea></div>
+          <div class="actions">
+            <button class="btn primary" id="confirmBtn" disabled>落　帖</button>
+            <p class="hint" id="pickHint">先择吉日，再定时辰</p>
+          </div>
+        </section>
+
+        <!-- ---------- 已定 / 定帖 ---------- -->
+        <section class="picker" id="settledBox" data-show="settled final">
+          <div class="stamp" id="stampText">帖　已　落　定</div>
+          <div class="reply" data-show="settled">
+            <div class="t">回　执　（复制后发与小任）</div>
+            <pre id="replyText"></pre>
+          </div>
+          <div class="share" data-show="settled">
+            <div class="st">或　把　这　行　链　接　发　与　小　任</div>
+            <div class="srow">
+              <input id="shareUrl" readonly aria-label="定帖链接">
+              <button class="sbtn" id="shareBtn" type="button">复制</button>
+            </div>
+            <div class="sn">他点开即见定帖，无需再填。</div>
+          </div>
+          <div class="actions" data-show="settled">
+            <button class="btn primary" id="copyBtn">复　制　回　执</button>
+            <button class="btn ghost" id="againBtn">另　择　吉　日</button>
+            <p class="hint" id="doneHint"></p>
+          </div>
+          <div class="actions" data-show="final">
+            <a class="btn ghost" id="navBtn" target="_blank" rel="noopener">地　图　导　航</a>
+          </div>
+        </section>
+
+        <div class="almanac">
+          <span><i class="yi">宜</i>　会友 · 小酌 · 叙旧</span>
+          <span><i class="ji">忌</i>　加班 · 节食 · 爽约</span>
+        </div>
+
+        <div class="signoff">
+          <div class="who"><span class="a">敬　邀</span><span class="b" id="hostName">服务员　小任</span></div>
+          <div class="sealbox"><span id="sealText">小任<br>之印</span></div>
+        </div>
+
+        <div class="colophon" id="colophon">丙午年 · 初冬 · 手书</div>
+      </div>
+    </article>
+  </main>
+</div>
+
+<script>
+/* ======================================================================
+   配置区 —— 部署前只需要改这一块
+   ------------------------------------------------------------------
+   guest      抬头称谓
+   host       落款
+   seal       印章文字，<br> 控制换行
+   venue      席设（主人填）。name 店名包间 / addr 地址 / tel 电话 / mapUrl 导航链接
+              四项全留空 -> 帖上写作「容小任稍后奉上」
+   offer      敬备一行的主文与副文
+   rangeFrom  可择范围起点：今日往后推几天（1 = 最早明天）
+   rangeDays  可择范围长度（天）
+   slots      时段候选，label 是雅称，time 是 24 小时制
+   notifyWebhook  可选：填飞书/企群自定义机器人 webhook 后，她一落帖就自动通知您；
+                  留空则靠她把回执发回来
+   storeKey   本机记忆键，换人做帖时改掉，免得读到上一位的记录
+   ====================================================================== */
+var CONFIG = {
+  guest:"范老师",
+  host:"服务员　小任",
+  seal:"小任<br>之印",
+  envFrom:"小任　敬封",
+  colophonTop:"薄　酌　一　叙",
+  colophon:"丙午年 · 初冬 · 手书",
+
+  /* 席设：主人填。四项留空时帖上印 venuePh 这句话 */
+  venue:{ name:"", addr:"", tel:"", mapUrl:"" },
+  venuePh:"交给小的我来安排",
+  venuePhSub:"席既定，即另帖奉告",
+
+  offer:"薄酌 · 清谈 · 旧话",
+  offerSub:"专席候驾，别无他客",
+
+  rangeFrom:1, rangeDays:45,
+  slots:[{label:"午宴",time:"11:30"},{label:"午后",time:"14:30"},
+         {label:"晚宴",time:"17:30"},{label:"夜酌",time:"19:30"}],
+
+  notifyWebhook:"",                 /* 可选：落帖后自动通知主人的机器人地址 */
+  storeKey:"qingtie.fan.v2"
+};
+
+/* ===================== 中文历法小工具 ===================== */
+var CN="〇一二三四五六七八九";
+var CN_NUM=["零","一","二","三","四","五","六","七","八","九","十","十一","十二","十三","十四","十五","十六",
+ "十七","十八","十九","二十","廿一","廿二","廿三","廿四","廿五","廿六","廿七","廿八","廿九","三十","卅一"];
+var WD=["日","一","二","三","四","五","六"];
+function cnYear(y){return String(y).split("").map(function(d){return CN[+d];}).join("")}
+function cnNum(n){return CN_NUM[n]||String(n)}
+function pad2(n){return (n<10?"0":"")+n}
+function shiChen(h){var a=["子","丑","寅","卯","辰","巳","午","未","申","酉","戌","亥"];return a[Math.floor(((h+1)%24)/2)]+"时"}
+function cnDateTime(d,hh,mm){
+  var ap = hh<5?"凌晨":hh<8?"早晨":hh<11?"上午":hh<13?"中午":hh<15?"午后":hh<18?"下午":"晚上";
+  var h12 = hh%12===0?12:hh%12;
+  return ap+cnNum(h12)+"时"+(mm?cnNum(mm)+"分":"整");
+}
+function fmtDate(d){return cnYear(d.getFullYear())+"年"+cnNum(d.getMonth()+1)+"月"+cnNum(d.getDate())+"日　星期"+WD[d.getDay()]}
+function fmtTimeCN(t){var p=t.split(":");return cnDateTime(null,+p[0],+p[1]||0)}
+function sameDay(a,b){return a.getFullYear()===b.getFullYear()&&a.getMonth()===b.getMonth()&&a.getDate()===b.getDate()}
+function sod(d){var x=new Date(d);x.setHours(0,0,0,0);return x}
+function esc(s){return String(s).replace(/[&<>"]/g,function(c){return {"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]})}
+
+/* ===================== 状态 ===================== */
+var $=function(id){return document.getElementById(id)};
+var Q=new URLSearchParams(location.search);
+var today=sod(new Date());
+var minDay=new Date(today); minDay.setDate(minDay.getDate()+CONFIG.rangeFrom);
+var maxDay=new Date(minDay); maxDay.setDate(maxDay.getDate()+CONFIG.rangeDays-1);
+var viewY=minDay.getFullYear(), viewM=minDay.getMonth();
+var sel={date:null,time:null,memo:""};
+
+function load(){try{return JSON.parse(localStorage.getItem(CONFIG.storeKey)||"null")}catch(e){return null}}
+function save(v){try{v?localStorage.setItem(CONFIG.storeKey,JSON.stringify(v)):localStorage.removeItem(CONFIG.storeKey)}catch(e){}}
+function applyMode(m){
+  document.body.setAttribute("data-mode",m);
+  var els=document.querySelectorAll("[data-show]");
+  for(var i=0;i<els.length;i++){
+    var on=(" "+els[i].getAttribute("data-show")+" ").indexOf(" "+m+" ")>=0;
+    els[i].classList.toggle("hide",!on);
+  }
+  if(m==="invite")
+    $("timeValue").innerHTML="<span class='ph'>敬候　玉音自择</span><span class='sub'>择时一帖，附于帖后</span>";
+  else if(m==="picking")
+    $("timeValue").innerHTML="<span class='ph'>敬候　您亲择</span>";
+  if(m==="final"||m==="settled"){
+    var nb=$("navBtn"); if(nb){ if(CONFIG.venue.mapUrl) nb.href=CONFIG.venue.mapUrl; else nb.classList.add("hide"); }
+  }
+}
+
+/* ===================== 静态文案 ===================== */
+function paintStatic(){
+  $("guestName").textContent=CONFIG.guest;
+  $("envTo").textContent=CONFIG.guest+"　亲启";
+  $("envFrom").textContent=CONFIG.envFrom;
+  $("hostName").textContent=CONFIG.host;
+  $("sealText").innerHTML=CONFIG.seal;
+  $("envSeal").innerHTML="<span>"+CONFIG.seal+"</span>";
+  $("colophonTop").textContent=CONFIG.colophonTop;
+  $("colophon").textContent=CONFIG.colophon;
+  $("offerValue").firstChild.nodeValue=CONFIG.offer;
+  $("offerValue").querySelector(".sub").textContent=CONFIG.offerSub;
+  paintVenue();
+}
+function paintVenue(){
+  var v=CONFIG.venue,html;
+  if(v.name||v.addr){
+    html="<strong>"+esc(v.name||v.addr)+"</strong>";
+    var sub=[]; if(v.name&&v.addr) sub.push(v.addr); if(v.tel) sub.push("电话 "+v.tel);
+    if(sub.length) html+="<span class='sub'>"+esc(sub.join("　·　"))+"</span>";
+  }else{
+    html="<span class='ph'>"+esc(CONFIG.venuePh)+"</span><span class='sub'>"+esc(CONFIG.venuePhSub)+"</span>";
+  }
+  $("venueValue").innerHTML=html;
+  if(v.mapUrl&&$("navBtn")) $("navBtn").href=v.mapUrl;
+}
+
+/* ===================== 日历 ===================== */
+function paintCal(){
+  var cal=$("cal"); cal.innerHTML="";
+  WD.forEach(function(w){var d=document.createElement("div");d.className="wd";d.textContent=w;cal.appendChild(d)});
+  var lead=new Date(viewY,viewM,1).getDay();
+  for(var i=0;i<lead;i++){var b=document.createElement("div");b.className="day blank";cal.appendChild(b)}
+  var days=new Date(viewY,viewM+1,0).getDate();
+  for(var n=1;n<=days;n++){
+    var dt=new Date(viewY,viewM,n), btn=document.createElement("button");
+    btn.type="button"; btn.className="day"+(sameDay(dt,today)?" today":"")+(sel.date&&sameDay(dt,sel.date)?" on":"");
+    btn.disabled = dt<minDay||dt>maxDay;
+    btn.innerHTML="<span>"+n+"</span>";
+    (function(dd){btn.onclick=function(){sel.date=dd;paintCal();paintSlots();gate()}})(dt);
+    cal.appendChild(btn);
+  }
+  $("mLabel").textContent=viewY+"年"+cnNum(viewM+1)+"月";
+  $("prevM").disabled = new Date(viewY,viewM,0) < new Date(minDay.getFullYear(),minDay.getMonth(),1);
+  $("nextM").disabled = new Date(viewY,viewM+1,1) > new Date(maxDay.getFullYear(),maxDay.getMonth(),1);
+}
+$("prevM").onclick=function(){var m=viewM-1,y=viewY;if(m<0){m=11;y--}viewY=y;viewM=m;paintCal()};
+$("nextM").onclick=function(){var m=viewM+1,y=viewY;if(m>11){m=0;y++}viewY=y;viewM=m;paintCal()};
+
+/* ===================== 时段 ===================== */
+function paintSlots(){
+  var box=$("slots"); box.innerHTML="";
+  CONFIG.slots.forEach(function(s){
+    var b=document.createElement("button");
+    b.type="button"; b.className="slot"+(sel.time===s.time?" on":"");
+    b.innerHTML="<span class='k'>"+s.label+"</span><span class='v'>"+s.time+"</span>";
+    b.onclick=function(){sel.time=s.time;gate();paintSlots()};
+    box.appendChild(b);
+  });
+}
+$("ctime").onchange=function(){if(this.value){sel.time=this.value;gate();paintSlots()}};
+
+/* ===================== 落帖 ===================== */
+function pickedText(){return sel.date&&sel.time ? fmtDate(sel.date)+"　"+fmtTimeCN(sel.time) : ""}
+function gate(){
+  var ok=!!(sel.date&&sel.time);
+  $("confirmBtn").disabled=!ok;
+  $("pickHint").innerHTML = ok ? "<b>"+pickedText()+"</b>　点「落帖」即定" : "先择吉日，再定时辰";
+  $("cTimeHint").textContent = sel.time ? "已选 "+sel.time+"　"+shiChen(+sel.time.split(":")[0]) : "";
+}
+function replyBody(){
+  var v=CONFIG.venue, L=[];
+  L.push("【回帖】"+CONFIG.guest+" 示小任：");
+  L.push("");
+  L.push("时间　"+pickedText()+"（"+shiChen(+sel.time.split(":")[0])+"）");
+  L.push("席设　"+(v.name?v.name+(v.addr?"　"+v.addr:""):CONFIG.venuePh));
+  if(sel.memo) L.push("附言　"+sel.memo);
+  L.push("");
+  L.push("—— 此复");
+  return L.join("\n");
+}
+function notify(){
+  if(!CONFIG.notifyWebhook) return;
+  try{
+    fetch(CONFIG.notifyWebhook,{method:"POST",mode:"no-cors",keepalive:true,
+      headers:{"Content-Type":"text/plain;charset=UTF-8"},
+      body:JSON.stringify({msg_type:"text",content:{text:replyBody().replace(/\n/g,"\n")}})}).catch(function(){});
+  }catch(e){}
+}
+/* ---------- 分享链接（零后端闭环：她选完 -> 链接发回 -> 点开即定帖） ---------- */
+function isoDay(d){return d.getFullYear()+"-"+pad2(d.getMonth()+1)+"-"+pad2(d.getDate())}
+function shareUrl(){
+  var u=location.origin+location.pathname+"?mode=final&d="+isoDay(sel.date)+"&t="+sel.time;
+  if(sel.memo) u+="&memo="+encodeURIComponent(sel.memo);
+  return u;
+}
+function copyText(t,btn,back){
+  function done(){btn.textContent="已复制";setTimeout(function(){btn.textContent=back},1700)}
+  function fb(){var ta=document.createElement("textarea");ta.value=t;ta.style.cssText="position:fixed;opacity:0";
+    document.body.appendChild(ta);ta.select();
+    try{document.execCommand("copy");done()}catch(e){alert("请长按上方文字复制")}document.body.removeChild(ta)}
+  if(navigator.clipboard&&navigator.clipboard.writeText) navigator.clipboard.writeText(t).then(done,fb); else fb();
+}
+
+function settle(asFinal){
+  applyMode(asFinal?"final":"settled");
+  $("stampText").textContent = asFinal?"已　蒙　玉　允":"帖　已　落　定";
+  $("proseDate").textContent=fmtDate(sel.date);
+  $("timeValue").innerHTML=pickedText()+"<span class='shichen'>"+shiChen(+sel.time.split(":")[0])+"</span>"
+    +(sel.memo?"<span class='sub'>附言　"+esc(sel.memo)+"</span>":"");
+  $("replyText").textContent=replyBody();
+  /* file:// 下 origin 为 "null"，链接不可用，只留回执 */
+  var shareBox=document.querySelector(".share");
+  if(shareBox){
+    var usable = location.protocol!=="file:" && location.origin && location.origin!=="null";
+    shareBox.classList.toggle("hide", !usable);
+    if(usable) $("shareUrl").value=shareUrl();
+  }
+  if(!asFinal){
+    $("doneHint").innerHTML = CONFIG.notifyWebhook
+      ? "已递与小任，他随后再送一纸<b>定帖</b>给您。"
+      : "复制回执发与小任即算落定；他随后再送一纸<b>定帖</b>给您。";
+  }
+  save({date:sel.date.getTime(),time:sel.time,memo:sel.memo,at:Date.now()});
+  if(!asFinal) notify();
+}
+function unseal(){
+  applyMode("picking");
+  sel.date=null; sel.time=null; sel.memo="";
+  var ta=$("memo"); if(ta) ta.value="";
+  var ct=$("ctime"); if(ct) ct.value=CONFIG.slots[2] ? CONFIG.slots[2].time : "18:30";
+  save(null); paintCal(); paintSlots(); gate();
+}
+$("confirmBtn").onclick=function(){if(sel.date&&sel.time){sel.memo=$("memo").value.trim().slice(0,80);settle(false)}};
+$("againBtn").onclick=unseal;
+$("shareBtn").onclick=function(){copyText($("shareUrl").value,this,"复制")};
+$("copyBtn").onclick=function(){copyText($("replyText").textContent,this,"复　制　回　执")};
+
+/* ===================== 启封 ==================== */
+function openPost(removeEnv){
+  $("post").hidden=false;
+  requestAnimationFrame(function(){$("post").classList.add("show");$("card").classList.add("opened")});
+  var env=$("envelope");
+  if(removeEnv){ env && env.parentNode && env.parentNode.removeChild(env); }
+  else{ env.classList.add("gone"); setTimeout(function(){env&&env.parentNode&&(env.parentNode.style.display="none")},760) }
+}
+$("envelope")&&$("envelope").addEventListener("click",function(){var e=this;e.classList.add("tapped");setTimeout(function(){openPost(false)},230)});
+$("envelope")&&$("envelope").addEventListener("keydown",function(e){if(e.key==="Enter"||e.key===" "){e.preventDefault();this.click()}});
+
+/* ===================== 启动 ===================== */
+(function boot(){
+  paintStatic();
+  applyMode("picking");
+
+  if(Q.has("dbg")) setTimeout(function(){
+    var r=function(el){if(!el)return null;var b=el.getBoundingClientRect();return [Math.round(b.left),Math.round(b.width),Math.round(b.height)]};
+    var card=document.querySelector(".card"), env=document.querySelector(".envelope");
+    var bot=Math.max(card?Math.round(card.getBoundingClientRect().bottom):0, env?Math.round(env.getBoundingClientRect().bottom):0);
+    document.title="DBG "+JSON.stringify({iw:innerWidth,dw:document.documentElement.clientWidth,
+      post:r($("post")),card:r(card),content:r(document.querySelector(".content")),
+      slots:r($("slots")),cal:r($("cal")),head:r(document.querySelector(".ph-head")),
+      sign:r(document.querySelector(".signoff")),
+      env:r(document.querySelector(".envelope")),
+      bottom:bot, sh:document.documentElement.scrollHeight, sw:document.documentElement.scrollWidth});
+  },260);
+
+  /* 自检：?autotest=flow|settle|restore 走真实 DOM 事件，结果写进 title */
+  var AT = Q.get("autotest");
+  if(AT==="settle") setTimeout(function(){
+    var days=[].slice.call(document.querySelectorAll(".day:not(.blank)")).filter(function(d){return !d.disabled});
+    days[Math.min(6,days.length-1)].click();
+    document.querySelectorAll(".slot")[2].click();
+    $("memo").value="不吃香菜"; $("memo").dispatchEvent(new Event("input"));
+    $("confirmBtn").click();
+    document.title="AT2 stored="+(load()?"yes":"no")+" pick="+sel.date.getTime()+"/"+sel.time;
+  },320);
+  else if(AT==="restore") setTimeout(function(){
+    var out=[];
+    var st=load();
+    out.push((st?"PASS ":"FAIL ")+"存档存在");
+    out.push((document.body.getAttribute("data-mode")==="settled"?"PASS ":"FAIL ")+"重载后自动回到 settled ["+document.body.getAttribute("data-mode")+"]");
+    out.push((/不吃香菜/.test($("timeValue").textContent)?"PASS ":"FAIL ")+"附言被恢复 ["+$("timeValue").textContent+"]");
+    out.push((document.querySelectorAll(".day.on").length===1?"PASS ":"FAIL ")+"日历高亮恢复");
+    out.push((/mode=final/.test($("shareUrl").value)||location.protocol==="file:"?"PASS ":"FAIL ")+"分享链接可用或已隐藏");
+    document.title="AT3 "+out.join(" | ");
+  },420);
+  else if(AT==="flow") setTimeout(function(){
+    var out=[];
+    var chk=function(name,cond,extra){ out.push((cond?"PASS ":"FAIL ")+name+(cond?"":" ["+extra+"]")) };
+    var days=[].slice.call(document.querySelectorAll(".day:not(.blank)")).filter(function(d){return !d.disabled});
+    chk("可选日存在", days.length>0, days.length);
+    var pick=days[Math.min(6,days.length-1)];
+    pick.click();
+    chk("点日后高亮", document.querySelectorAll(".day.on").length===1, document.querySelectorAll(".day.on").length);
+    chk("只选日时落帖仍锁", $("confirmBtn").disabled===true, $("confirmBtn").disabled);
+    var s0=document.querySelectorAll(".slot")[2];
+    s0.click();
+    chk("点时段高亮", document.querySelectorAll(".slot.on").length===1, document.querySelectorAll(".slot.on").length);
+    chk("落帖解锁", $("confirmBtn").disabled===false, $("confirmBtn").disabled);
+    $("memo").value="不吃香菜"; $("memo").dispatchEvent(new Event("input"));
+    $("confirmBtn").click();
+    chk("进入 settled", document.body.getAttribute("data-mode")==="settled", document.body.getAttribute("data-mode"));
+    var tv=$("timeValue").textContent;
+    chk("中文日期", /[一二三四五六七八九十]+月[一二三四五六七八九十]+日/.test(tv), tv);
+    chk("中文时辰", /时/.test(tv)&&/戌时|酉时|亥时|午时|未时/.test(tv), tv);
+    chk("附言上帖", /不吃香菜/.test(tv), tv);
+    chk("回执含附言", /不吃香菜/.test($("replyText").textContent), $("replyText").textContent);
+    chk("印章文案", /帖\u3000已\u3000落\u3000定|已\u3000蒙\u3000玉\u3000允|帖已落定|已蒙玉允/.test($("stampText").textContent), $("stampText").textContent);
+    var sh=document.querySelector(".share"), su=$("shareUrl").value;
+    if(location.protocol==="file:") chk("file:// 隐藏分享块", sh.classList.contains("hide"), "shown");
+    else chk("分享链接成形", !sh.classList.contains("hide") && /mode=final&d=\d{4}-\d{2}-\d{2}&t=\d{2}:\d{2}/.test(su), su);
+    chk("已落帖时择时区隐藏", $("picker").classList.contains("hide"), "visible");
+    chk("已存档", !!load(), "none");
+    $("againBtn").click();
+    chk("另择吉日回退", document.body.getAttribute("data-mode")==="picking", document.body.getAttribute("data-mode"));
+    chk("回退后高亮清空", document.querySelectorAll(".day.on,.slot.on").length===0, document.querySelectorAll(".day.on,.slot.on").length);
+    chk("回退后时间行复位", /敬候/.test($("timeValue").textContent), $("timeValue").textContent);
+    chk("回退后落帖重锁", $("confirmBtn").disabled===true, $("confirmBtn").disabled);
+    chk("回退后清档", !load(), "still saved");
+    out.push("INFO persisted="+(load()?"yes":"no"));
+    document.title="AT "+out.join(" | ");
+  },320);
+
+  /* 成图参数：?vw=390 模拟窄屏宽度 */
+  if(Q.get("vw")){ var w=parseInt(Q.get("vw"),10)||390;
+    document.querySelector(".stage").style.cssText+="width:"+w+"px;margin:0 auto"; }
+
+  var m=Q.get("mode")||"";
+  if(m==="envelope") return;                       /* 只留信封，作封面成图 */
+
+  /* 从 URL 灌入席设与所选（成图 / 定帖） */
+  if(Q.get("venue")){ var p=Q.get("venue").split("|");
+    CONFIG.venue.name=p[0]||""; CONFIG.venue.addr=p[1]||""; CONFIG.venue.tel=p[2]||""; paintVenue(); }
+  if(Q.get("memo")) sel.memo=decodeURIComponent(Q.get("memo"));
+  if(Q.get("d")) sel.date=sod(new Date(Q.get("d")+"T00:00:00"));
+  if(Q.get("t")){ sel.time=Q.get("t"); $("ctime").value=sel.time; }
+
+  if(["picking","invite","settled","final"].indexOf(m)>=0){   /* 成图：去信封 */
+    openPost(true); paintCal(); paintSlots();
+    if((m==="settled"||m==="final")&&sel.date&&sel.time) settle(m==="final");
+    else{ applyMode(m); gate(); }
+    return;
+  }
+
+  /* 真实访问：信封启封，择时结果存本机 */
+  var st=load();
+  if(st&&st.date&&st.time){
+    sel.date=new Date(st.date); sel.time=st.time; sel.memo=st.memo||"";
+    $("memo").value=sel.memo;
+  }
+  openPost(Q.has("open"));
+  paintCal(); paintSlots();
+  if(sel.date&&sel.time){ settle(false); return; }
+  gate();
+})();
+</script>
+</body>
+</html>
