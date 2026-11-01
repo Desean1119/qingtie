@@ -803,8 +803,10 @@ function openPost(removeEnv){
   $("post").hidden=false;
   requestAnimationFrame(function(){$("post").classList.add("show");$("card").classList.add("opened")});
   var env=$("envelope");
+  /* 只隐信封本身。以前写的是 env.parentNode.style.display，而父节点正是 .stage，
+     导致启封后 760ms 整页被隐——她一点开就是白屏。 */
   if(removeEnv){ env && env.parentNode && env.parentNode.removeChild(env); }
-  else{ env.classList.add("gone"); setTimeout(function(){env&&env.parentNode&&(env.parentNode.style.display="none")},760) }
+  else{ env.classList.add("gone"); setTimeout(function(){ if(env) env.style.display="none" },760) }
 }
 $("envelope")&&$("envelope").addEventListener("click",function(){var e=this;e.classList.add("tapped");setTimeout(function(){openPost(false)},230)});
 $("envelope")&&$("envelope").addEventListener("keydown",function(e){if(e.key==="Enter"||e.key===" "){e.preventDefault();this.click()}});
@@ -883,6 +885,25 @@ $("envelope")&&$("envelope").addEventListener("keydown",function(e){if(e.key==="
     out.push("INFO persisted="+(load()?"yes":"no"));
     document.title="AT "+out.join(" | ");
   },320);
+
+  /* 回归：真实启封（点信封）后，760ms 定时器走完，整页必须还在。
+     历史 bug：openPost 隐的是 env.parentNode 即 .stage，一点开就白屏。 */
+  if(Q.get("autotest")==="after"){
+    var envEl=$("envelope");
+    if(envEl) setTimeout(function(){ envEl.click() }, 200);
+    setTimeout(function(){
+      var out=[], chk=function(n,c,x){ out.push((c?"PASS ":"FAIL ")+n+(c?"":" ["+x+"]")) };
+      var st=document.querySelector(".stage"), post=$("post");
+      chk(".stage 未被隐藏", getComputedStyle(st).display!=="none", getComputedStyle(st).display);
+      var pb=post.getBoundingClientRect();
+      chk("帖身有高度", pb.height>200, Math.round(pb.height));
+      chk("帖身在视口内", pb.width>0 && pb.left>=0 && pb.left<=innerWidth, Math.round(pb.left)+"w"+Math.round(pb.width));
+      var e2=$("envelope");
+      chk("信封已退出布局", !e2 || getComputedStyle(e2).display==="none", e2?getComputedStyle(e2).display:"removed");
+      chk("择时区仍可用", !!document.querySelector(".day:not(.blank)"), "no calendar");
+      document.title="ATA "+out.join(" | ");
+    }, 1500);
+  }
 
   /* 自检：?autotest=mobile 量真实手机视口下的触控要件 */
   if(AT==="mobile") setTimeout(function(){
