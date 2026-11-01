@@ -5,7 +5,19 @@
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <meta name="format-detection" content="telephone=no">
 <meta name="theme-color" content="#1e3a32">
-<title>请帖 · 小任敬邀</title>
+<title>请帖 · 恭候范老师亲启</title>
+<!-- 微信分享卡片只读静态 meta，爬虫不执行 JS：以下 URL 必须写死绝对地址。
+     绑定自有域名后，把 desean1119.github.io/qingtie 整体换掉（共 4 处）。 -->
+<meta property="og:title"       content="请帖 · 恭候范老师亲启">
+<meta property="og:description" content="小任敬备薄酌，席设容小的我安排。时辰恭请您在帖上自择，一落定便知会小任。">
+<meta property="og:image"       content="https://desean1119.github.io/qingtie/cover.jpg">
+<meta property="og:image:width"  content="500">
+<meta property="og:image:height" content="500">
+<meta property="og:type"        content="website">
+<meta itemprop="name"        content="请帖 · 恭候范老师亲启">
+<meta itemprop="description" content="小任敬备薄酌，席设容小的我安排。时辰恭请您在帖上自择。">
+<meta itemprop="image"       content="https://desean1119.github.io/qingtie/cover.jpg">
+<meta name="description" content="小任敬备薄酌，恭请范老师拨冗一叙；时辰恭请帖上自择。">
 <style>
 /* ==========================================================================
    请帖 · 中式雅致　米白宣纸 / 墨绿 / 烫金 / 朱砂
@@ -29,9 +41,11 @@
   --cinnabar:  #a8322a;
   --cinnabar-2:#8b271f;
 
-  --f-kai:"KaiTi","楷体","STKaiti","Kaiti SC","Kaiti TC",serif;
-  --f-song:"SimSun","宋体","Songti SC","STSong",serif;
-  --f-fang:"FangSong","仿宋","STFangsong",serif;
+  /* 字体链：iOS 排在 Windows 前（iOS 没有 KaiTi/楷体 这两个名字），
+     末尾再兜 Noto/Source Han Serif，保证安卓落在衬线而不是黑体 */
+  --f-kai:"Kaiti SC","STKaiti","KaiTi","楷体","Kaiti TC","Noto Serif CJK SC","Source Han Serif SC","Songti SC",serif;
+  --f-song:"Songti SC","STSong","SimSun","宋体","Noto Serif CJK SC","Source Han Serif SC",serif;
+  --f-fang:"FangSong","STFangsong","仿宋","Songti SC","Noto Serif CJK SC",serif;
 
   --card-w:452px;
   --pad-x:clamp(20px,5.6vw,34px);
@@ -41,8 +55,9 @@
 *{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
 html,body{margin:0;padding:0}
 body{
-  min-height:100svh;background:#13110e;color:var(--ink);
+  min-height:100vh;min-height:100svh;background:#13110e;color:var(--ink);
   font-family:var(--f-song);-webkit-font-smoothing:antialiased;overflow-x:hidden;
+  text-size-adjust:100%;-webkit-text-size-adjust:100%;
 }
 body::before{
   content:"";position:fixed;inset:0;z-index:0;pointer-events:none;
@@ -51,7 +66,8 @@ body::before{
     radial-gradient(100% 60% at 50% 108%,rgba(45,86,72,.30),transparent 64%);
 }
 .stage{position:relative;z-index:1;display:flex;justify-content:center;
-  padding:clamp(10px,3vw,30px) clamp(8px,2.6vw,22px) max(26px,6vh)}
+  padding:clamp(10px,3vw,30px) clamp(8px,2.6vw,22px)
+          calc(max(26px,6vh) + env(safe-area-inset-bottom,0px))}
 
 /* ---------- 宣纸 ---------- */
 .paper{
@@ -127,9 +143,15 @@ body::before{
 
 h1.title{margin:clamp(11px,3vw,16px) 0 0;text-align:center;font-family:var(--f-kai);font-weight:400;
   font-size:clamp(36px,10.4vw,50px);line-height:1;letter-spacing:.4em;text-indent:.4em;
-  background:linear-gradient(96deg,#8b6d2b 0%,#c8aa5d 22%,#f4e4b6 44%,#c8aa5d 62%,#8b6d2b 100%);
-  -webkit-background-clip:text;background-clip:text;color:transparent;
-  filter:drop-shadow(0 1px 0 rgba(255,255,255,.55))}
+  color:var(--gold-deep)}
+/* 烫金渐变只在真正支持 background-clip:text 的环境开。
+   否则 color:transparent 会让「请帖」两个字直接看不见。 */
+@supports ((-webkit-background-clip:text) or (background-clip:text)){
+  h1.title{background:linear-gradient(96deg,#8b6d2b 0%,#c8aa5d 22%,#f4e4b6 44%,#c8aa5d 62%,#8b6d2b 100%);
+    -webkit-background-clip:text;background-clip:text;
+    -webkit-text-fill-color:transparent;color:transparent;
+    filter:drop-shadow(0 1px 0 rgba(255,255,255,.55))}
+}
 .sheen{position:relative;overflow:hidden}
 .sheen::after{content:"";position:absolute;inset:0;pointer-events:none;
   background:linear-gradient(105deg,transparent 42%,rgba(255,255,255,.8) 50%,transparent 58%);
@@ -170,32 +192,31 @@ h1.title{margin:clamp(11px,3vw,16px) 0 0;text-align:center;font-family:var(--f-k
 .ph-lbl small{display:block;font-family:var(--f-fang);font-size:11px;letter-spacing:.1em;color:var(--ink-mute);margin-top:4px}
 .mnav{display:flex;align-items:center;gap:2px;margin-left:auto}
 .mnav button{appearance:none;border:1px solid rgba(168,135,60,.42);background:rgba(255,255,255,.44);
-  color:var(--gold-deep);font-family:var(--f-kai);font-size:14px;line-height:1;padding:5px 9px;border-radius:2px;cursor:pointer;transition:.22s}
-.mnav button:hover:not(:disabled){background:var(--jade);color:#f2e8d0;border-color:var(--jade)}
+  color:var(--gold-deep);font-family:var(--f-kai);font-size:16px;line-height:1;
+  min-width:44px;min-height:44px;padding:0;border-radius:2px;cursor:pointer;transition:.22s;
+  touch-action:manipulation;display:grid;place-items:center}
 .mnav button:disabled{opacity:.28;cursor:default}
 .mnav .ml{min-width:6em;text-align:center;font-family:var(--f-kai);font-size:13.5px;letter-spacing:.1em;color:var(--ink)}
 
 .cal{margin-top:11px;display:grid;grid-template-columns:repeat(7,1fr);gap:3px}
 .cal .wd{text-align:center;font-family:var(--f-fang);font-size:11px;color:var(--jade-soft);padding:3px 0 6px}
 .day{appearance:none;border:1px solid transparent;background:transparent;cursor:pointer;padding:0;
-  aspect-ratio:1/1;border-radius:2px;display:grid;place-items:center;position:relative;
-  font-family:var(--f-song);font-size:14.5px;color:var(--ink);
+  aspect-ratio:1/1;min-height:44px;border-radius:2px;display:grid;place-items:center;position:relative;
+  font-family:var(--f-song);font-size:15px;color:var(--ink);touch-action:manipulation;
   transition:background .2s,color .2s,border-color .2s,transform .2s}
 .day.blank{visibility:hidden}
 .day:disabled{color:#c3bbab;cursor:default}
-.day:not(:disabled):hover{border-color:rgba(168,135,60,.6);background:rgba(255,255,255,.6)}
 .day.today::after{content:"";position:absolute;bottom:5px;width:11px;height:1px;background:rgba(168,135,60,.8)}
 .day.on{background:linear-gradient(158deg,#2c5347,#1a332c);border-color:var(--jade);color:#f2e8d2;
   transform:translateY(-1px);box-shadow:0 7px 15px -9px rgba(30,58,50,1)}
 .day.on::after{background:var(--gold-hi)}
 
 .slots{margin-top:12px;display:grid;grid-template-columns:repeat(2,1fr);gap:7px}
-.slot{appearance:none;cursor:pointer;padding:9px 6px 8px;border-radius:2px;text-align:center;
+.slot{appearance:none;cursor:pointer;min-height:48px;padding:10px 6px 9px;border-radius:2px;text-align:center;
   border:1px solid rgba(168,135,60,.4);background:rgba(255,255,255,.44);
-  font-family:var(--f-kai);color:var(--ink);transition:.22s}
-.slot .k{display:block;font-size:14.5px;letter-spacing:.2em;text-indent:.2em}
-.slot .v{display:block;font-family:var(--f-song);font-size:11.5px;color:var(--ink-mute);letter-spacing:.06em;margin-top:3px}
-.slot:hover{border-color:var(--gold);background:rgba(255,255,255,.74)}
+  font-family:var(--f-kai);color:var(--ink);touch-action:manipulation;transition:.22s}
+.slot .k{display:block;font-size:15px;letter-spacing:.2em;text-indent:.2em}
+.slot .v{display:block;font-family:var(--f-song);font-size:12px;color:var(--ink-mute);letter-spacing:.06em;margin-top:3px}
 .slot.on{background:linear-gradient(158deg,#2c5347,#1a332c);border-color:var(--jade);color:#f2e8d2;
   box-shadow:0 7px 15px -9px rgba(30,58,50,1)}
 .slot.on .v{color:rgba(230,210,154,.86)}
@@ -203,7 +224,8 @@ h1.title{margin:clamp(11px,3vw,16px) 0 0;text-align:center;font-family:var(--f-k
 .custom{margin-top:10px;display:flex;align-items:center;gap:8px;flex-wrap:wrap;
   font-family:var(--f-fang);font-size:11.5px;color:var(--ink-mute);letter-spacing:.1em}
 .custom input[type=time]{appearance:none;border:1px solid rgba(168,135,60,.42);background:rgba(255,255,255,.55);
-  border-radius:2px;padding:6px 8px;font-family:var(--f-song);font-size:16px;color:var(--ink)}
+  border-radius:2px;padding:6px 10px;font-family:var(--f-song);font-size:16px;color:var(--ink);
+  min-height:44px;min-width:132px}
 .note{margin-top:10px}
 .note textarea{width:100%;appearance:none;border:1px solid rgba(168,135,60,.38);border-radius:2px;
   background:rgba(255,255,255,.5);padding:9px 10px;min-height:52px;resize:vertical;
@@ -213,17 +235,15 @@ h1.title{margin:clamp(11px,3vw,16px) 0 0;text-align:center;font-family:var(--f-k
 
 .actions{margin-top:clamp(14px,4vw,18px);display:grid;gap:8px}
 .btn{appearance:none;cursor:pointer;border-radius:2px;width:100%;text-align:center;display:block;
-  padding:13px 14px 12px;font-family:var(--f-kai);font-size:15.5px;letter-spacing:.32em;text-indent:.32em;
-  text-decoration:none;transition:.24s}
+  min-height:48px;padding:14px 14px 13px;font-family:var(--f-kai);font-size:16px;letter-spacing:.32em;text-indent:.32em;
+  text-decoration:none;touch-action:manipulation;transition:.24s}
 .btn.primary{border:1px solid var(--jade);background:linear-gradient(163deg,#2d5648,#1a332c);
   color:#f2e8d2;box-shadow:0 13px 28px -15px rgba(27,53,45,1)}
-.btn.primary:hover{filter:brightness(1.09)}
 .btn.primary:active{transform:translateY(1px)}
 .btn.primary:disabled{background:rgba(255,255,255,.44);border:1px dashed rgba(168,135,60,.5);
   color:var(--ink-mute);box-shadow:none}
 .btn.ghost{border:1px solid rgba(168,135,60,.5);background:rgba(255,255,255,.4);
-  color:var(--gold-deep);font-size:13.5px;letter-spacing:.24em;text-indent:.24em;padding:11px 13px}
-.btn.ghost:hover{background:rgba(255,255,255,.74);border-color:var(--gold)}
+  color:var(--gold-deep);font-size:14.5px;letter-spacing:.24em;text-indent:.24em;padding:12px 13px}
 .hint{margin:1px 0 0;text-align:center;font-family:var(--f-fang);font-size:11.5px;line-height:1.8;
   letter-spacing:.08em;color:var(--ink-mute);word-break:break-word}
 .hint b{font-weight:400;color:var(--jade);font-family:var(--f-kai);letter-spacing:.14em}
@@ -241,11 +261,11 @@ h1.title{margin:clamp(11px,3vw,16px) 0 0;text-align:center;font-family:var(--f-k
 .share .st{font-family:var(--f-kai);font-size:12px;letter-spacing:.2em;color:var(--jade)}
 .share .srow{display:flex;gap:7px;margin-top:7px;align-items:stretch}
 .share input{flex:1 1 auto;min-width:0;appearance:none;border:1px solid rgba(168,135,60,.34);
-  background:rgba(255,255,255,.6);border-radius:2px;padding:7px 8px;
-  font-family:var(--f-song);font-size:11.5px;color:var(--ink-soft);text-overflow:ellipsis}
+  background:rgba(255,255,255,.6);border-radius:2px;padding:8px;
+  font-family:var(--f-song);font-size:16px;color:var(--ink-soft);text-overflow:ellipsis}
 .share .sbtn{flex:0 0 auto;appearance:none;cursor:pointer;border:1px solid var(--jade);border-radius:2px;
-  background:linear-gradient(163deg,#2d5648,#1a332c);color:#f2e8d2;
-  font-family:var(--f-kai);font-size:12.5px;letter-spacing:.1em;padding:0 12px}
+  background:linear-gradient(163deg,#2d5648,#1a332c);color:#f2e8d2;min-width:56px;min-height:40px;
+  font-family:var(--f-kai);font-size:14px;letter-spacing:.1em;touch-action:manipulation}
 .share .sn{margin-top:6px;font-family:var(--f-fang);font-size:11px;letter-spacing:.06em;color:var(--ink-mute)}
 
 /* ---------- 落定 ---------- */
@@ -282,12 +302,81 @@ h1.title{margin:clamp(11px,3vw,16px) 0 0;text-align:center;font-family:var(--f-k
 .colophon{margin-top:clamp(12px,3.4vw,16px);text-align:center;font-family:var(--f-fang);
   font-size:10.5px;letter-spacing:.28em;text-indent:.28em;color:rgba(41,38,31,.4)}
 
+/* ==================== 分享封面（微信卡片缩略图，500x500）====================
+   卡片在聊天里只缩到 ≈130px，所以只留三层信息：请帖 · 称谓 · 印。
+   细节全部呜掉，靠字号和对比度说话。 */
+#shareCover{display:none}
+body[data-mode=share] #shareCover{display:block}
+body[data-mode=share] .envelope,
+body[data-mode=share] .post{display:none !important}
+body[data-mode=share]{background:#16241f}
+body[data-mode=share] .stage{padding:0;width:100vw;max-width:none;margin:0 auto;align-items:flex-start}
+/* 尺寸全部走 cqw（.sc 为 inline-size 容器）：不管这台无头 Edge 把视口锁在多少，
+   卡片永远是正方形且按比例自洽，截图后整幅缩放即可。 */
+.sc{
+  container-type:inline-size;
+  position:relative;width:100vw;aspect-ratio:1/1;overflow:hidden;border-radius:0;
+  background:
+    radial-gradient(120% 100% at 22% 8%,rgba(230,210,154,.14),transparent 58%),
+    linear-gradient(158deg,#2c5748 0%,#1e3a31 46%,#15291f 100%);
+}
+.sc::after{content:"";position:absolute;inset:0;pointer-events:none;opacity:.5;
+  background-image:repeating-linear-gradient(128deg,rgba(255,255,255,.028) 0 1px,transparent 1px 6px)}
+.sc-frame{position:absolute;inset:4cqw;border:1.4px solid rgba(230,210,154,.5)}
+.sc-frame::before{content:"";position:absolute;inset:1.5cqw;border:1px solid rgba(230,210,154,.2)}
+/* 竖排单行在 vertical-rl 下会贴容器最右，所以外层用 flex 居中，
+   内层才负负责竖排。 */
+.sc-title{
+  position:absolute;inset:0;display:flex;align-items:center;justify-content:center;
+  font-family:var(--f-kai);color:#f2e7cb
+}
+.sc-title span{
+  writing-mode:vertical-rl;text-orientation:upright;
+  font-size:20cqw;line-height:1;letter-spacing:.14em;
+  text-shadow:0 2px 0 rgba(0,0,0,.35)
+}
+.sc-to{
+  position:absolute;right:10cqw;top:10cqw;
+  writing-mode:vertical-rl;text-orientation:upright;
+  font-family:var(--f-kai);font-size:4.4cqw;letter-spacing:.28em;color:rgba(242,231,203,.88)
+}
+.sc-sub{
+  position:absolute;left:10cqw;bottom:10cqw;
+  writing-mode:vertical-rl;text-orientation:upright;
+  font-family:var(--f-fang);font-size:3.5cqw;letter-spacing:.32em;color:rgba(230,210,154,.7)
+}
+.sc-seal{
+  position:absolute;left:9.5cqw;top:9.5cqw;width:13cqw;height:13cqw;display:grid;place-items:center;
+  border-radius:1cqw;transform:rotate(-7deg);
+  background:radial-gradient(120% 120% at 32% 26%,#c94a3f,var(--cinnabar) 52%,var(--cinnabar-2));
+  box-shadow:0 2cqw 5cqw -2cqw rgba(168,50,42,.85),0 0 0 1px rgba(255,255,255,.16) inset
+}
+.sc-seal span{font-family:var(--f-kai);color:#fdf4e4;font-size:3cqw;line-height:1.3;text-align:center;letter-spacing:.04em}
+.sc-mark{position:absolute;left:50%;top:50%;translate:-50% -50%;width:86cqw;opacity:.05;color:#f2e7cb;pointer-events:none}
+
 /* ---------- 模式：可见性由 JS 依 data-show 控制 ---------- */
 .hide{display:none !important}
 
 @media (max-width:340px){
   .field{grid-template-columns:4.4em 1fr}
   h1.title{letter-spacing:.28em;text-indent:.28em}
+  .cal{gap:2px}
+  .day{font-size:14px}
+}
+/* 悬停只在真有鼠标的设备上开：触屏上 :hover 会在点完后粘住不走，
+   留下一堆高亮，看起来像已选中 */
+@media (hover:hover) and (pointer:fine){
+  .mnav button:hover:not(:disabled){background:var(--jade);color:#f2e8d0;border-color:var(--jade)}
+  .day:not(:disabled):hover{border-color:rgba(168,135,60,.6);background:rgba(255,255,255,.6)}
+  .slot:hover{border-color:var(--gold);background:rgba(255,255,255,.74)}
+  .btn.primary:hover{filter:brightness(1.09)}
+  .btn.ghost:hover{background:rgba(255,255,255,.74);border-color:var(--gold)}
+  .share .sbtn:hover{filter:brightness(1.1)}
+}
+/* 触屏：按下给即时反馈，补偿被关掉的 hover */
+@media (hover:none){
+  .day:active:not(:disabled),.slot:active{border-color:var(--gold);background:rgba(255,255,255,.7)}
+  .btn.primary:active{filter:brightness(1.12)}
 }
 @media (prefers-reduced-motion:reduce){*{animation-duration:.001s !important;transition-duration:.001s !important}}
 </style>
@@ -314,6 +403,18 @@ h1.title{margin:clamp(11px,3vw,16px) 0 0;text-align:center;font-family:var(--f-k
 </defs></svg>
 
 <div class="stage">
+
+  <!-- ================= 分享封面（?mode=share，截出来当 cover.jpg） ================= -->
+  <div id="shareCover">
+    <div class="sc">
+      <div class="sc-frame"></div>
+      <svg class="sc-mark" viewBox="0 0 120 120"><use href="#orn-flower"/></svg>
+      <div class="sc-seal"><span>小任<br>之印</span></div>
+      <div class="sc-to" id="scTo">范老师　亲启</div>
+      <div class="sc-title"><span>请帖</span></div>
+      <div class="sc-sub" id="scSub">恭请择一良辰</div>
+    </div>
+  </div>
 
   <!-- ================= 信封 ================= -->
   <div class="envelope" id="envelope" role="button" tabindex="0" aria-label="启封">
@@ -452,6 +553,7 @@ var CONFIG = {
   envFrom:"小任　敬封",
   colophonTop:"薄　酌　一　叙",
   colophon:"丙午年 · 初冬 · 手书",
+  shareSub:"恭请择一良辰",          /* 分享封面左下角竖排小字 */
 
   /* 席设：主人填。四项留空时帖上印 venuePh 这句话 */
   venue:{ name:"", addr:"", tel:"", mapUrl:"" },
@@ -518,6 +620,8 @@ function applyMode(m){
 
 /* ===================== 静态文案 ===================== */
 function paintStatic(){
+  $("scTo").textContent=CONFIG.guest+"　亲启";
+  $("scSub").textContent=CONFIG.shareSub;
   $("guestName").textContent=CONFIG.guest;
   $("envTo").textContent=CONFIG.guest+"　亲启";
   $("envFrom").textContent=CONFIG.envFrom;
@@ -576,7 +680,47 @@ function paintSlots(){
     box.appendChild(b);
   });
 }
-$("ctime").onchange=function(){if(this.value){sel.time=this.value;gate();paintSlots()}};
+/* 时刻输入：iOS/安卓 Chromium 支持 type=time，但微信 XWeb 旧内核可能降级成 text。
+   降级后用户手输的可能是 7:30 / 19点30 / 晚上七点半，必须归一成 HH:MM，
+   否则 fmtTimeCN 与分享链接里的 t= 参数会坏。 */
+function normTime(v){
+  if(!v) return null;
+  var s=String(v).trim();
+  var m=s.match(/^(\d{1,2})\s*[:：点时]\s*(\d{1,2})?$/);
+  if(!m){
+    m=s.match(/^(\d{1,2})(\d{2})$/);            /* 1930 -> 19:30 */
+    if(m) return pad2(Math.min(23,+m[1]))+":"+pad2(Math.min(59,+m[2]));
+    return null;
+  }
+  var h=+m[1], mi=+(m[2]||0);
+  if(mi>59||h>23) return null;
+  return pad2(h)+":"+pad2(mi);
+}
+var TIME_OK=(function(){
+  var i=document.createElement("input");
+  try{ i.setAttribute("type","time"); i.value="20:30"; return i.value==="20:30"; }catch(e){ return false; }
+})();
+(function initTimeInput(){
+  var el=$("ctime"); if(!el) return;
+  if(TIME_OK) return;
+  el.setAttribute("type","text");
+  el.setAttribute("inputmode","numeric");
+  el.setAttribute("placeholder","19:30");
+  el.value="19:30";
+  var lb=el.previousElementSibling;
+  if(lb) lb.textContent="其他时刻（24 小时制）";
+  el.onchange=function(){
+    var n=normTime(this.value);
+    if(n){ this.value=n; sel.time=n; gate(); paintSlots(); }
+    else{ this.value=sel.time||"19:30"; $("cTimeHint").textContent="时刻请写 19:30 这样"; }
+  };
+})();
+
+$("ctime").onchange=function(){
+  if(!TIME_OK) return;                            /* 降级分支自己处理 */
+  var n=normTime(this.value);
+  if(n){ sel.time=n; gate(); paintSlots(); }
+};
 
 /* ===================== 落帖 ===================== */
 function pickedText(){return sel.date&&sel.time ? fmtDate(sel.date)+"　"+fmtTimeCN(sel.time) : ""}
@@ -679,6 +823,7 @@ $("envelope")&&$("envelope").addEventListener("keydown",function(e){if(e.key==="
       slots:r($("slots")),cal:r($("cal")),head:r(document.querySelector(".ph-head")),
       sign:r(document.querySelector(".signoff")),
       env:r(document.querySelector(".envelope")),
+      sc:r(document.querySelector(".sc")),
       bottom:bot, sh:document.documentElement.scrollHeight, sw:document.documentElement.scrollWidth});
   },260);
 
@@ -739,11 +884,54 @@ $("envelope")&&$("envelope").addEventListener("keydown",function(e){if(e.key==="
     document.title="AT "+out.join(" | ");
   },320);
 
+  /* 自检：?autotest=mobile 量真实手机视口下的触控要件 */
+  if(AT==="mobile") setTimeout(function(){
+    var out=[], chk=function(n,c,x){ out.push((c?"PASS ":"FAIL ")+n+(c?"":" ["+x+"]")) };
+    var vw=innerWidth, de=document.documentElement;
+    chk("无横向溢出", de.scrollWidth<=vw+1, de.scrollWidth+">"+vw);
+    /* 所有可点元素最小边 ≥ 40px（iOS HIG 44，微信 webview 容忍 40） */
+    var small=[];
+    [].forEach.call(document.querySelectorAll("button,a.btn,input,textarea,.day:not(.blank)"),function(el){
+      var b=el.getBoundingClientRect();
+      if(b.width<1||b.height<1) return;
+      if(el.disabled) return;
+      if(b.height<40||b.width<40) small.push((el.className||el.tagName)+" "+Math.round(b.width)+"x"+Math.round(b.height));
+    });
+    chk("触控目标≥40px", small.length===0, small.slice(0,4).join(" ; "));
+    /* 表单字号 ≥16px，否则 iOS 聚焦时整页放大 */
+    var tiny=[];
+    [].forEach.call(document.querySelectorAll("input,textarea"),function(el){
+      var fs=parseFloat(getComputedStyle(el).fontSize);
+      if(fs<16) tiny.push(el.id+"="+fs);
+    });
+    chk("输入字号≥16px", tiny.length===0, tiny.join(","));
+    /* 烫金降级：标题必须看得见 */
+    var ts=getComputedStyle(document.querySelector("h1.title"));
+    var clip=(ts.webkitBackgroundClip||ts.backgroundClip||"");
+    var visible = clip.indexOf("text")<0 ? ts.color!=="rgba(0, 0, 0, 0)" : true;
+    chk("标题文字可见", visible, "clip="+clip+" color="+ts.color);
+    /* 字体：CJK 全角等宽，宽度探针分不出楷体与黑体，只能验声明。
+       真实命中看截图。 */
+    var fam=getComputedStyle(document.querySelector("h1.title")).fontFamily, famLow=fam.toLowerCase();
+    chk("字体链以衬线族开头", /^("|')?(kaiti|stkaiti|songti|stsong|sim sun|simsun|noto serif|source han)/i.test(famLow.trim()), famLow.slice(0,34));
+    chk("字体链无 sans-serif 兑底", famLow.indexOf('sans-serif')<0, famLow.slice(0,34));
+    /* 日历列宽：7 列不得挤到不可点 */
+    var d0=document.querySelector(".day:not(.blank)");
+    var db=d0.getBoundingClientRect();
+    chk("日历格够宽", db.width>=38, Math.round(db.width)+"px");
+    /* 落帖按钮在视口内可达（不靠横向滚动） */
+    var cb=$("confirmBtn").getBoundingClientRect();
+    chk("落帖按钮在水平区内", cb.left>=0 && cb.right<=vw+1, Math.round(cb.left)+".."+Math.round(cb.right));
+    out.push("INFO vw="+vw+" scrollW="+de.scrollWidth+" fam="+fam.slice(0,28));
+    document.title="ATM "+out.join(" | ");
+  },380);
+
   /* 成图参数：?vw=390 模拟窄屏宽度 */
   if(Q.get("vw")){ var w=parseInt(Q.get("vw"),10)||390;
     document.querySelector(".stage").style.cssText+="width:"+w+"px;margin:0 auto"; }
 
   var m=Q.get("mode")||"";
+  if(m==="share"){ applyMode("share"); $("post").hidden=true; return; }
   if(m==="envelope") return;                       /* 只留信封，作封面成图 */
 
   /* 从 URL 灌入席设与所选（成图 / 定帖） */
