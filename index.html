@@ -385,7 +385,7 @@ body[data-mode=share] .stage{padding:0;width:100vw;max-width:none;margin:0 auto;
 @media (prefers-reduced-motion:reduce){*{animation-duration:.001s !important;transition-duration:.001s !important}}
 </style>
 </head>
-<body data-mode="picking">
+<body data-mode="picking" data-preopen>
 
 <svg width="0" height="0" style="position:absolute" aria-hidden="true"><defs>
   <g id="orn-corner">
@@ -903,6 +903,11 @@ $("envelope")&&$("envelope").addEventListener("keydown",function(e){if(e.key==="
            b?(getComputedStyle(envEl).display+" h="+Math.round(b.height)):"no envelope");
       var prePB=$("post").getBoundingClientRect();
       pchk("未点时帖身藏好", $("post").hidden===true || prePB.height<1, "h="+Math.round(prePB.height));
+      /* 居中性：信封应在首屏中间，不是顶在上边留大片黑 */
+      var eb2=envEl.getBoundingClientRect(), vh=innerHeight;
+      var gapTop=Math.round(eb2.top), gapBot=Math.round(vh-eb2.bottom);
+      pchk("信封首屏居中", Math.abs(gapTop-gapBot)<=Math.max(40, vh*0.12) && gapTop>vh*0.05,
+          "top="+gapTop+" bottom="+gapBot+" vh="+vh);
       envEl.click();
     }, 250);
     setTimeout(function(){
