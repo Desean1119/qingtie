@@ -764,7 +764,7 @@ function copyText(t,btn,back){
   if(navigator.clipboard&&navigator.clipboard.writeText) navigator.clipboard.writeText(t).then(done,fb); else fb();
 }
 
-function settle(asFinal){
+function settle(asFinal, silent){
   applyMode(asFinal?"final":"settled");
   $("stampText").textContent = asFinal?"已　蒙　玉　允":"帖　已　落　定";
   $("proseDate").textContent=fmtDate(sel.date);
@@ -784,7 +784,7 @@ function settle(asFinal){
       : "复制回执发与小任即算落定；他随后再送一纸<b>定帖</b>给您。";
   }
   save({date:sel.date.getTime(),time:sel.time,memo:sel.memo,at:Date.now()});
-  if(!asFinal) notify();
+  if(!asFinal && !silent) notify();      /* 重载恢复时不再重复通知主人 */
 }
 function unseal(){
   applyMode("picking");
@@ -886,23 +886,34 @@ $("envelope")&&$("envelope").addEventListener("keydown",function(e){if(e.key==="
     document.title="AT "+out.join(" | ");
   },320);
 
-  /* 回归：真实启封（点信封）后，760ms 定时器走完，整页必须还在。
-     历史 bug：openPost 隐的是 env.parentNode 即 .stage，一点开就白屏。 */
+  /* 回归：真实启封仪式（两阶段）。
+     bug 一：openPost 错隐 env.parentNode（即 .stage），一点开就白屏。
+     bug 二：boot 无条件调 openPost，仪式被跳过，信封自己消失。 */
   if(Q.get("autotest")==="after"){
-    var envEl=$("envelope");
-    if(envEl) setTimeout(function(){ envEl.click() }, 200);
+    var envEl=$("envelope"), phase=[];
+    var pchk=function(n,c,x){ phase.push((c?"PASS ":"FAIL ")+n+(c?"":" ["+x+"]")) };
     setTimeout(function(){
-      var out=[], chk=function(n,c,x){ out.push((c?"PASS ":"FAIL ")+n+(c?"":" ["+x+"]")) };
-      var st=document.querySelector(".stage"), post=$("post");
+      var b=envEl?envEl.getBoundingClientRect():null;
+      pchk("未点时信封在眼前", !!b && getComputedStyle(envEl).display!=="none" && b.height>100,
+           b?(getComputedStyle(envEl).display+" h="+Math.round(b.height)):"no envelope");
+      var prePB=$("post").getBoundingClientRect();
+      pchk("未点时帖身藏好", $("post").hidden===true || prePB.height<1, "h="+Math.round(prePB.height));
+      envEl.click();
+    }, 250);
+    setTimeout(function(){
+      var out=[];
+      var chk=function(n,c,x){ out.push((c?"PASS ":"FAIL ")+n+(c?"":" ["+x+"]")) };
+      var st=document.querySelector(".stage"), pb=$("post").getBoundingClientRect();
       chk(".stage 未被隐藏", getComputedStyle(st).display!=="none", getComputedStyle(st).display);
-      var pb=post.getBoundingClientRect();
-      chk("帖身有高度", pb.height>200, Math.round(pb.height));
+      chk("帖身已展开", pb.height>200, Math.round(pb.height));
       chk("帖身在视口内", pb.width>0 && pb.left>=0 && pb.left<=innerWidth, Math.round(pb.left)+"w"+Math.round(pb.width));
       var e2=$("envelope");
       chk("信封已退出布局", !e2 || getComputedStyle(e2).display==="none", e2?getComputedStyle(e2).display:"removed");
       chk("择时区仍可用", !!document.querySelector(".day:not(.blank)"), "no calendar");
-      document.title="ATA "+out.join(" | ");
-    }, 1500);
+      chk("落帖按钮可达", !!$("confirmBtn") && $("confirmBtn").getBoundingClientRect().width>50,
+          $("confirmBtn")?Math.round($("confirmBtn").getBoundingClientRect().width):"none");
+      document.title="ATA "+phase.concat(out).join(" | ");
+    }, 1600);
   }
 
   /* 自检：?autotest=mobile 量真实手机视口下的触控要件 */
@@ -969,16 +980,17 @@ $("envelope")&&$("envelope").addEventListener("keydown",function(e){if(e.key==="
     return;
   }
 
-  /* 真实访问：信封启封，择时结果存本机 */
+  /* 真实访问：先只露信封，点启封才见帖身。
+     以前这里无条件 openPost()，把启封仪式跳过了；现在只在 ?open=1 时直接展开。 */
   var st=load();
   if(st&&st.date&&st.time){
     sel.date=new Date(st.date); sel.time=st.time; sel.memo=st.memo||"";
     $("memo").value=sel.memo;
   }
-  openPost(Q.has("open"));
   paintCal(); paintSlots();
-  if(sel.date&&sel.time){ settle(false); return; }
-  gate();
+  if(sel.date&&sel.time) settle(false, true);
+  else gate();
+  if(Q.has("open")) openPost(false);
 })();
 </script>
 </body>
